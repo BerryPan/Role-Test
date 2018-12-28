@@ -23,7 +23,7 @@ public static partial class ServerToClientReflection {
           "ChRzZXJ2ZXJUb0NsaWVudC5wcm90byKeAQoHQW5vdGhlchIMCgRuYW1lGAog",
           "ASgJEg0KBXBvc194GAEgASgCEg0KBXBvc195GAIgASgCEg0KBXBvc196GAMg",
           "ASgCEg0KBXJvdF94GAQgASgCEg0KBXJvdF95GAUgASgCEg0KBXJvdF96GAYg",
-          "ASgCEgoKAmhwGAcgASgFEg8KB2Jvc3NfaHAYCCABKAUSDgoGdGFyZ2V0GAkg",
+          "ASgCEgoKAmhwGAcgASgCEg8KB2Jvc3NfaHAYCCABKAUSDgoGdGFyZ2V0GAkg",
           "ASgFYgZwcm90bzM="));
     descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
         new pbr::FileDescriptor[] { },
@@ -155,9 +155,9 @@ public sealed partial class Another : pb::IMessage<Another> {
 
   /// <summary>Field number for the "hp" field.</summary>
   public const int HpFieldNumber = 7;
-  private int hp_;
+  private float hp_;
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-  public int Hp {
+  public float Hp {
     get { return hp_; }
     set {
       hp_ = value;
@@ -228,7 +228,7 @@ public sealed partial class Another : pb::IMessage<Another> {
     if (RotX != 0F) hash ^= RotX.GetHashCode();
     if (RotY != 0F) hash ^= RotY.GetHashCode();
     if (RotZ != 0F) hash ^= RotZ.GetHashCode();
-    if (Hp != 0) hash ^= Hp.GetHashCode();
+    if (Hp != 0F) hash ^= Hp.GetHashCode();
     if (BossHp != 0) hash ^= BossHp.GetHashCode();
     if (Target != 0) hash ^= Target.GetHashCode();
     return hash;
@@ -265,9 +265,9 @@ public sealed partial class Another : pb::IMessage<Another> {
       output.WriteRawTag(53);
       output.WriteFloat(RotZ);
     }
-    if (Hp != 0) {
-      output.WriteRawTag(56);
-      output.WriteInt32(Hp);
+    if (Hp != 0F) {
+      output.WriteRawTag(61);
+      output.WriteFloat(Hp);
     }
     if (BossHp != 0) {
       output.WriteRawTag(64);
@@ -307,8 +307,8 @@ public sealed partial class Another : pb::IMessage<Another> {
     if (RotZ != 0F) {
       size += 1 + 4;
     }
-    if (Hp != 0) {
-      size += 1 + pb::CodedOutputStream.ComputeInt32Size(Hp);
+    if (Hp != 0F) {
+      size += 1 + 4;
     }
     if (BossHp != 0) {
       size += 1 + pb::CodedOutputStream.ComputeInt32Size(BossHp);
@@ -345,7 +345,7 @@ public sealed partial class Another : pb::IMessage<Another> {
     if (other.RotZ != 0F) {
       RotZ = other.RotZ;
     }
-    if (other.Hp != 0) {
+    if (other.Hp != 0F) {
       Hp = other.Hp;
     }
     if (other.BossHp != 0) {
@@ -388,8 +388,8 @@ public sealed partial class Another : pb::IMessage<Another> {
           RotZ = input.ReadFloat();
           break;
         }
-        case 56: {
-          Hp = input.ReadInt32();
+        case 61: {
+          Hp = input.ReadFloat();
           break;
         }
         case 64: {

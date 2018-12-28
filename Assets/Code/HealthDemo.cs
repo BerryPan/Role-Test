@@ -16,8 +16,7 @@ public class HealthDemo : MonoBehaviour
     public float currentPower;
     public float falshSpeed = 2f;
     public Color flashColor = new Color(1f, 0f, 0f, 0.1f);
-    public GameObject Player1;
-    public GameObject Player2;
+    public GameObject Player;
 
     float currentHealth;
     PausePanelControl PPC;
@@ -31,6 +30,7 @@ public class HealthDemo : MonoBehaviour
 	bool isDead;
 	bool damaged;
     float maxHP;
+    float timer = 0.1f;
     
 	// Use this for initialization
 	private void Start()
@@ -57,10 +57,14 @@ public class HealthDemo : MonoBehaviour
 	// Update is called once per frame
 	private void Update ()
     {
-        if (!isDead)
+        if (timer > 0)
+            timer -= Time.deltaTime;
+        else
         {
             ConncetServer_local();
+            timer = 0.1f;
         }
+        
 		if(Input.GetKeyDown(KeyCode.P))
 		{
             PPC.InitColor();
@@ -109,7 +113,7 @@ public class HealthDemo : MonoBehaviour
     }
     void ConncetServer_local()
     {
-        IPAddress ipAdr = IPAddress.Parse("127.0.0.1");
+        IPAddress ipAdr = IPAddress.Parse("101.132.135.198");
         IPEndPoint ipEp = new IPEndPoint(ipAdr, 1234);
 
         Socket clientScoket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -121,19 +125,38 @@ public class HealthDemo : MonoBehaviour
         float rx = GetComponent<Transform>().localEulerAngles.x;
         float ry = GetComponent<Transform>().localEulerAngles.y;
         float rz = GetComponent<Transform>().localEulerAngles.z;
-        Local loc = new Local { PosX = xx, PosY = yy, PosZ = zz, RotX = rx, RotY = ry, RotZ = rz, Name = name };
+        Local loc = new Local { PosX = xx, PosY = yy, PosZ = zz, RotX = rx, RotY = ry, RotZ = rz, Name = name, Hp = currentHealth };
         byte[] concent = loc.ToByteArray();
         clientScoket.Send(concent);
         byte[] response = new byte[1024];
         int len_recv = clientScoket.Receive(response);
-        while (len_recv > 0)
+        if (len_recv > 0)
         {
             byte[] data = response.Take(len_recv).ToArray();
             Another another = Another.Parser.ParseFrom(data);
-            response = new byte[1024];
-            len_recv = clientScoket.Receive(response);
+
+            if (GameObject.Find(another.Name))
+            {
+                GameObject.Find(another.Name).GetComponent<Transform>().position = new Vector3(another.PosX, another.PosY, another.PosZ);
+                GameObject.Find(another.Name).GetComponent<Transform>().localEulerAngles = new Vector3(another.RotX, another.RotY, another.RotZ);
+                if(another.Hp == 0)
+                {
+                    Destroy(GameObject.Find(another.Name));
+                }
+            }
+            else
+            {
+                if (another.Name != null && another.Hp != 0)
+                {
+                    GameObject go = Instantiate(Player);
+                    go.transform.name = another.Name;
+                    GameObject.Find(another.Name).GetComponent<Transform>().position = new Vector3(another.PosX, another.PosY, another.PosZ);
+                    GameObject.Find(another.Name).GetComponent<Transform>().localEulerAngles = new Vector3(another.RotX, another.RotY, another.RotZ);
+                }
+            }
         }
-        
+
+
         clientScoket.Shutdown(SocketShutdown.Both);
         clientScoket.Close();
     }
