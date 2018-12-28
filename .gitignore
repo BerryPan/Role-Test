@@ -259,3 +259,31 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/Assets/Characters Models/Materials
+/Assets/Characters Models/Characters
+/Assets/Level 1 Monster Pack
+/Assets/LowPoly Environment Pack
+/Assets/LuckiestGuy
+/Assets/Music
+/Assets/Plugins
+/Assets/skybox texture
+/Assets/Textures
+/Assets/UI
+/bulid
+/Library
+/ProjectSettings
+/Temp
+/Role Test.sln
+/Role Test.Editor.csproj
+/Role Test.csproj
+/Assets/__Slime.prefab
+/Assets/__Rabbit.prefab
+/Assets/__Ghost.prefab
+/Assets/__Bat.prefab
+/Assets/videoEnd.cs
+/Assets/Player.prefab
+/Assets/New Terrain.asset
+/Assets/Grenade.prefab
+/Assets/Connection.cs
+/Assets/Access.cs
+/Assembly-CSharp.csproj
